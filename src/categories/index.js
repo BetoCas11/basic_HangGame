@@ -26,8 +26,9 @@ function eventCategories(buttonElement, dialogModal, sectionCategories, categori
             const separationWord = randomWord.slice(0, lastSpacedWord);
             const wordRemaing = randomWord.slice((lastSpacedWord + 1), randomWord.length);
             location.href = `${location.origin}/index.html#${sessionStorage.getItem('selectCategory')}`;
+            sessionStorage.setItem('keyword', JSON.stringify(randomWord));
             
-            wordtoInsert(randomWord, $guessWord, separationWord, wordRemaing);
+            wordtoInsert(JSON.parse(sessionStorage.getItem('keyword')), $guessWord, separationWord, wordRemaing);
         }
     })
 }

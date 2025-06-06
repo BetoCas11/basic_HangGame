@@ -36,7 +36,7 @@ function initGame() {
     const separationWord = randomWord.slice(0, lastSpacedWord);
     const wordRemaing = randomWord.slice((lastSpacedWord + 1), randomWord.length);
     const $modalHome = document.querySelector('dialog.home');
-
+    sessionStorage.setItem('keyword', JSON.stringify(randomWord));
 
     $modalHome.close();
     $firstHeader.classList.remove('hide-element');
@@ -44,13 +44,14 @@ function initGame() {
 
     wordtoInsert(randomWord, $guessWord, separationWord, wordRemaing);
     eventCategories($buttonCategories, $modalCategories, $sectionCategories, Object.keys(categoriesWords), $titleCategories);
-    $alphabetLetters.addEventListener("click", (event) => {buttonsHandling(event, randomWord)});
+    $alphabetLetters.addEventListener("click", (event) => {buttonsHandling(event, JSON.parse(sessionStorage.getItem('keyword')))});
     
     
 }
 
 
 function wordtoInsert(randomWord, guessWord, separationWord, wordRemaing){
+    $alphabetLetters.addEventListener("click", (event) => {buttonsHandling(event, JSON.parse(sessionStorage.getItem('keyword')))});
     if (!randomWord.includes(" ")) {
         guessWord.innerHTML = '';
         randomWord.map(letter => {guessWord.insertAdjacentHTML('beforeend', /*html*/ `<span><!--${letter}--></span>`)})
