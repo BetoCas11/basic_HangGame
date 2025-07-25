@@ -225,6 +225,9 @@ main{
         display: flex;
         justify-content: center;
         gap: 25px;
+        &:first-of-type{
+            margin-block-end: 30px;
+        }
     }
     & .word:has(> div){
         flex-direction: column;
@@ -327,7 +330,7 @@ main{
             backdrop-filter: blur(10px);
         }
     }
-    & .you-win{
+    & .modal-GameOver{
         inline-size: 300px;
         block-size: 500px;
         background-image: var(--modal-about-Game);

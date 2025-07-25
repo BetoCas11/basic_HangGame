@@ -96,22 +96,42 @@ function eventCategories(e){
         const valueText = e.target.textContent
         previousCategory = valueText.charAt(0).toUpperCase() +  e.target.textContent.slice(1).toLowerCase();
         e.target.offsetParent.remove();
-        gameUI()
+        gameUI(previousCategory)
     };
 };
 
-function gameUI(){
+function gameUI(currentWord){
    buttonVisibility();
    const resultingtWord = randomWord();
    console.log(resultingtWord);
 
    $mainGame.insertAdjacentHTML('beforeend', /*html*/ `
     <div class="game">
+        <header>
+            <nav>
+                <li>
+                    <button id="showCategories">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </button>
+                    <p>${currentWord}</p>
+                </li>
+                <li>
+                    <div>
+                        <progress value="100" max="100"></progress>
+                    </div>
+                    <label>
+                    </label>
+                </li>
+
+            </nav>
+    </header>
         <section class="word"></section>
         <section class="alphabet-letters"></section>
     </div>
     
-   `)
+   `);
 
     insertWord(resultingtWord);
 
@@ -121,8 +141,7 @@ function gameUI(){
 function randomWord () {
     const currentCategory = categoriesWords[previousCategory.toLowerCase()];
     const randomWord = currentCategory[Math.floor(Math.random() * currentCategory.length)].toUpperCase().split("");
- //==> separar la lógica:
-
+    
     return randomWord
 };
 
@@ -135,6 +154,7 @@ function insertWord(word){
     alphabet.map(letter => {
         $alphabetLetters.insertAdjacentHTML("beforeend", /*html*/ `<button>${letter}</button>`)
     });
+    $alphabetLetters.addEventListener("click", (e) => handleLetterClick(e, word))
     if(word.includes(" ")){
         const lastSpacedWord = word.findLastIndex(index => index == " ");
         const separationWord = word.slice(0, lastSpacedWord);
@@ -149,6 +169,67 @@ function insertWord(word){
     }
 
 };
+
+function handleLetterClick(e, currentWord){
+    const $currentSpan = [...document.querySelectorAll(".word span")];
+    const $lifeGame = $mainGame.querySelector('.game > header > nav > li:last-child > div > progress');
+    console.log($lifeGame);
+    const buttonAlhabet = e.target.textContent;
+    const fixedWord = currentWord.filter(item => item != " ")
+    const valueIndexWord = fixedWord.map((item, index) => {
+        return {
+            "element": item,
+            "index": index
+        }
+    });
+    if (e.target.closest("button")) {
+        const matchingWord = valueIndexWord.filter(item => item.element == buttonAlhabet);
+        console.log(matchingWord, $currentSpan);
+        e.target.disabled = true;
+        e.target.style.cursor = "not-allowed";            
+        if (matchingWord.length >  0 ) {
+            matchingWord.map(item => {$currentSpan[item.index].textContent = item.element});
+            $currentSpan.every(itemText => itemText.textContent != "") ? setTimeout(() => { modalGameOver('You Win')},200) : null;
+        } else{
+            console.log("Palabra errónea");
+            subtractLife($lifeGame, currentWord.length);
+        }
+    }
+}
+
+
+
+function subtractLife (life, wordLength){
+    const removeLife = parseInt(100 / wordLength) + 5;
+    console.log(removeLife);
+    life.setAttribute('value', (life.value - removeLife))
+
+    if (life.value == 0) {
+        modalGameOver('You Lose')
+    }
+}
+
+
+
+function modalGameOver(caseofGame){
+    const $containerGame = $mainGame.querySelector('.game');
+    $containerGame.insertAdjacentHTML('beforeend', /*html */ `
+        <dialog  class="modal-GameOver">
+        <header>
+        <h3>${caseofGame}</h3>
+        </header>
+        <div>
+            ${ caseofGame == 'You Win' ? '<button>Continue</button>' : ''}
+            <button>New Category</button>
+            <button>Quit Game</button>
+        </div>
+
+    </dialog>
+
+    `);
+    $containerGame.querySelector('.modal-GameOver').showModal();
+}
+
 
 function wordtoInsert(randomWord, guessWord, separationWord, wordRemaing){
     $alphabetLetters.addEventListener("click", (event) => {buttonsHandling(event, JSON.parse(sessionStorage.getItem('keyword')))});
@@ -176,7 +257,7 @@ function buttonsHandling (e, word, alphabet=$alphabetLetters) {
             "element": item,
             "index": index
         }
-    })
+    });
     if (e.target.closest("button")) {
         const matchingWord = valueIndexWord.filter(item => item.element == buttonAlhabet);
         console.log(matchingWord, $currentSpan);
