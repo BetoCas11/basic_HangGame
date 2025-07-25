@@ -1,4 +1,4 @@
-import { wordtoInsert, $guessWord, categoriesWords, $alphabetLetters, $mainContainer, $firstHeader, initGame } from "../main.js";
+/* import { wordtoInsert, $guessWord, categoriesWords, $alphabetLetters, $mainContainer, $firstHeader, initGame } from "../main.js"; */
 function eventCategories(buttonElement, dialogModal, sectionCategories, categories, titleCategory) {
     buttonElement.addEventListener('click', () => {
         /* buttonElement.disabled = true; */

@@ -29,93 +29,7 @@ body{
     }
 
 }
-.home{
-    inline-size: 300px;
-    block-size: 500px;
-    background-image: var(--modal-about-Game);
-    border: none;
-    border-radius: 30px;
-    box-shadow: 0 -5px 0 4px var(--word-color);
-    overflow: visible;
-    & header{
-        inline-size: 100%;
-        block-size: 100px;
-        margin: 0;
-        text-align: center;
-        position: relative;
-        padding: 0;
-        & h1{
-            position: absolute;
-            top: -90px;
-            color: white;
-            font-size: 35px;
-            filter: drop-shadow(-6px 2px 0px black);
-            & p{
-                margin: 0;
-                text-align: start;
-                line-height: 1px;
-                padding-inline: 20px;
-                &:last-of-type{
-                    text-align: end;
-                }
-            }
-            & span{
-                background-image: var(--text-gradient);
-                background-clip: text;
-                color: transparent;
-                font-size: 60px;
-            }
-        }
-    }
-    & div {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        inline-size: 100%;
-        block-size: 70%;
-        align-items: center;
-        row-gap: 15px;
-        button{
-            border: none;
-            cursor: pointer;
-            &:first-child{
-                inline-size: 100px;
-                block-size: 100px;
-                border-radius: 100%;
-                background-image: var(--primary-color);
-                position: relative;
-                rotate: -9deg;
-                box-shadow: inset 0px -10px 0px rgba(0, 0, 0, 0.4);
-                & div{
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-45%, -50%);
-                    block-size: 50%;
-                    filter: drop-shadow(3px 6px 4px rgba(0,0,0,0.6));
-                    &::after{
-                        content: '';
-                        inline-size: 50%;
-                        block-size: 100%;
-                        clip-path: polygon(0 0, 0 100%, 100% 50%);
-                        background-color: white;
-                        border-radius: 10px;
-                    }
-                    
-                }
-            }
-            &:last-child{
-                inline-size: 90%;
-                background-color: var(--word-color);
-                color: white;
-                padding: 10px;
-                border-radius: 20px;
-                font-size: 25px;
-                font-weight: 800;
-            }
-        }
-    }
-}
+
 header{
     inline-size: 100%;
     block-size: 80px;
@@ -211,15 +125,103 @@ header{
 }
 main{
     inline-size: 100%;
-    block-size: max-content;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    row-gap: 30px;
+    block-size: 100dvb;
+    align-content: center;
     position: relative;
     z-index: 2;
-    & section{
-        inline-size: 80%;
+    & .home{
+        inline-size: 300px;
+        block-size: 500px;
+        background-image: var(--modal-about-Game);
+        border: none;
+        border-radius: 30px;
+        box-shadow: 0 -5px 0 4px var(--word-color);
+        margin-inline: auto;
+        & header{
+            inline-size: 100%;
+            block-size: 100px;
+            margin: 0;
+            text-align: center;
+            position: relative;
+            padding: 0;
+            & h1{
+                position: absolute;
+                top: -90px;
+                color: white;
+                font-size: 35px;
+                filter: drop-shadow(-6px 2px 0px black);
+                & p{
+                    margin: 0;
+                    text-align: start;
+                    line-height: 1px;
+                    padding-inline: 20px;
+                    &:last-of-type{
+                        text-align: end;
+                    }
+                }
+                & span{
+                    background-image: var(--text-gradient);
+                    background-clip: text;
+                    color: transparent;
+                    font-size: 60px;
+                }
+            }
+        }
+        & div {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            inline-size: 100%;
+            block-size: 70%;
+            align-items: center;
+            row-gap: 15px;
+            button{
+                border: none;
+                cursor: pointer;
+                &:disabled{
+                    cursor: not-allowed;
+                    opacity: 30%;
+                }
+                &:first-child{
+                    inline-size: 100px;
+                    block-size: 100px;
+                    border-radius: 100%;
+                    background-image: var(--primary-color);
+                    position: relative;
+                    rotate: -9deg;
+                    box-shadow: inset 0px -10px 0px rgba(0, 0, 0, 0.4);
+                    & div{
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-45%, -50%);
+                        block-size: 50%;
+                        filter: drop-shadow(3px 6px 4px rgba(0,0,0,0.6));
+                        &::after{
+                            content: '';
+                            inline-size: 50%;
+                            block-size: 100%;
+                            clip-path: polygon(0 0, 0 100%, 100% 50%);
+                            background-color: white;
+                            border-radius: 10px;
+                        }
+                        
+                    }
+                }
+                &:last-child{
+                    inline-size: 90%;
+                    background-color: var(--word-color);
+                    color: white;
+                    padding: 10px;
+                    border-radius: 20px;
+                    font-size: 25px;
+                    font-weight: 800;
+                }
+            }
+        }
+    }
+    & section:not(.home){
+        inline-size: 100%;
         display: flex;
         justify-content: center;
         gap: 25px;
@@ -271,6 +273,7 @@ main{
         background-color: var(--text-color);
         position: relative;
         border: none;
+        animation: showCategories ease-in-out 500ms;
         & header{
             block-size: max-content;
             font-weight: 500;
@@ -387,3 +390,13 @@ main{
     display: none;
 }
 
+@keyframes showCategories {
+    from{
+        transform: translate(-30vi, 0);
+        opacity: 0;
+    }
+    to{
+        transform: translatex(0vi);
+        opacity: 1;
+    }
+}

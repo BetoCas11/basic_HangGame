@@ -1,6 +1,6 @@
-import eventCategories from "../categories/index.js";
+/* import eventCategories from "../categories/index.js";
 import { initGame } from "../main.js";
-eventCategories
+eventCategories */
 function home (categories, buttons, modalCategories, sectionCategories, allCategories, titleContent) {
     const mainBody = document.querySelector('body');
     mainBody.children[0].classList.add('hide-element');
