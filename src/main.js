@@ -1,6 +1,6 @@
 /* import { home } from "./homePage/index.js";
-import eventCategories from "./categories/index.js"; */
-/* import { GameWon } from "./endGame/index.js"; */
+import eventCategories from "./categories/index.js";
+import { GameWon } from "./endGame/index.js"; */
 
 const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 const categoriesWords = {
@@ -21,6 +21,22 @@ const buttonVisibility = () => {
     $playGame.removeAttribute('disabled'); 
     $buttonChooseCategories.disabled = true;
 };
+
+const baseModal = /*html */ `
+<dialog class="modal" >
+    <header>
+        <h3>Pick a Category</h3>
+    </header>
+    <article class="categories">
+    </article>
+</dialog>
+`;
+
+const insertListCategories = (selector) => {
+    const $article = document.querySelector(selector)
+    allCategories.map(item => $article.insertAdjacentHTML('beforeend',/*html*/ `
+    <button>${item.toUpperCase()}</button>`));
+}
 
 /* const $firstHeader = document.querySelector('body > header');
 const $mainContainer = document.querySelector('main');
@@ -43,15 +59,7 @@ document.addEventListener('DOMContentLoaded', initGame)
 });  ==> Revisar el * / del html, l´n 26 col 64*/
 
 function initGame() {
-    const modalChooseCategories =  /*html */ `
-    <dialog class="modal" open>
-        <header>
-            <h3>Pick a Category</h3>
-        </header>
-        <article class="categories">
-        </article>
-    </dialog>
-    `;
+    const modalChooseCategories =  baseModal;
     
     $buttonChooseCategories.addEventListener('click', () => {
         $sectionInit.classList.add('hide-element');
@@ -59,6 +67,7 @@ function initGame() {
 
         const $modalCategories = $mainGame.querySelector('.modal');
         const viewCategories = $modalCategories.querySelector("article.categories");
+        $modalCategories.showModal();
         
         insertCategories(viewCategories);
     })
@@ -129,12 +138,28 @@ function gameUI(currentWord){
     </header>
         <section class="word"></section>
         <section class="alphabet-letters"></section>
+        <dialog class="modal" closedby="any" >
+            <header>
+                <form method="dialog">
+                    <button>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="white"><path d="M770.94-193.3v-164.03q0-55-36.23-91.23-36.23-36.23-91.22-36.23H258.7l152.12 152.12-53.81 53.71L113.3-522.67l243.71-243.71 53.81 53.71L258.7-560.54h384.79q86.16 0 144.76 58.6 58.61 58.6 58.61 144.61v164.03h-75.92Z"/></svg>
+                    </button>
+                </form>
+                <h3>Pick a Category</h3>
+            </header>
+            <article class="categories">
+            </article>
+        </dialog>
     </div>
     
    `);
-
+    const $headerbuttonCategories = $mainGame.querySelector('.game > header > nav > li:first-of-type > button#showCategories');
     insertWord(resultingtWord);
+    console.log($headerbuttonCategories);
 
+    insertListCategories(`.game > .modal > article.categories`);
+    
+    $headerbuttonCategories.addEventListener('click', (e) => {categoriesIntotheGame()})
 
 };
 
@@ -209,7 +234,14 @@ function subtractLife (life, wordLength){
     }
 }
 
+function categoriesIntotheGame () {
+    const $containerGame = $mainGame.querySelector('.game');
+    const $modalIntoGame = $containerGame.querySelector('.modal');
 
+    $modalIntoGame.showModal();
+    
+    
+}
 
 function modalGameOver(caseofGame){
     const $containerGame = $mainGame.querySelector('.game');
@@ -231,23 +263,23 @@ function modalGameOver(caseofGame){
 }
 
 
-function wordtoInsert(randomWord, guessWord, separationWord, wordRemaing){
+/*function wordtoInsert(randomWord, guessWord, separationWord, wordRemaing){
     $alphabetLetters.addEventListener("click", (event) => {buttonsHandling(event, JSON.parse(sessionStorage.getItem('keyword')))});
     if (!randomWord.includes(" ")) {
         guessWord.innerHTML = '';
-        randomWord.map(letter => {guessWord.insertAdjacentHTML('beforeend', /*html*/ `<span><!--${letter}--></span>`)})
+        randomWord.map(letter => {guessWord.insertAdjacentHTML('beforeend', /*html `<span><!--${letter}--></span>`)})
         console.log(randomWord);
     } else{
         guessWord.innerHTML = '';
         guessWord.insertAdjacentHTML("beforeend", `<div></div>`);
         guessWord.insertAdjacentHTML("beforeend", `<div></div>`);
         console.log(separationWord,wordRemaing);
-        separationWord.map(letter => {guessWord.children[0].insertAdjacentHTML('beforeend', /*html*/ `<span><!--${letter}--></span>`)});
-        wordRemaing.map(letter => {guessWord.children[1].insertAdjacentHTML('beforeend', /*html*/ `<span><!--${letter}--></span>`)});
+        separationWord.map(letter => {guessWord.children[0].insertAdjacentHTML('beforeend', /*html `<span><!--${letter}--></span>`)});
+        wordRemaing.map(letter => {guessWord.children[1].insertAdjacentHTML('beforeend', /*html `<span><!--${letter}--></span>`)});
     }
-}
+}*/
 
-function buttonsHandling (e, word, alphabet=$alphabetLetters) {
+/* function buttonsHandling (e, word, alphabet=$alphabetLetters) {
     console.log(word);
     const $currentSpan = [...document.querySelectorAll(".word span")];
     const buttonAlhabet = e.target.textContent;
@@ -275,5 +307,5 @@ function buttonsHandling (e, word, alphabet=$alphabetLetters) {
     }
 
 }
-
+ */
 /* export {initGame, wordtoInsert, categoriesWords, $guessWord, $alphabetLetters, $mainContainer, $firstHeader}; */
