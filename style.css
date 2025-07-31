@@ -311,7 +311,7 @@ main{
             place-items: center;
             justify-content: center;
             row-gap: 15px;
-            & button{
+            & button.select-category{
                 inline-size: 80%;
                 block-size: 100%;
                 border-radius: 20px;
