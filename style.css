@@ -33,7 +33,7 @@ body{
 header{
     inline-size: 100%;
     block-size: 80px;
-    padding-block-start: 100px;
+    
     margin-block-end: 100px;
     container: header-container / inline-size;
     & nav {
@@ -274,9 +274,27 @@ main{
         inline-size: 70%;
         max-inline-size: 1000px;
         background-color: var(--text-color);
-        position: relative;
+        position: fixed;
+        margin: auto;
+        inset: 0;
         border: none;
-        animation: showCategories ease-in-out 500ms;
+        transform: translate(-80vi, 0) scale(1);
+        opacity: 0;
+        transition: transform ease-in-out 500ms,
+                    opacity ease-in-out 500ms,
+                    display ease-in-out 500ms allow-discrete;
+        &[open]{ 
+            transition: transform ease-in-out 500ms,
+                        opacity ease-in-out 500ms;
+            transform: translate(0vi, 0) scale(1);
+            opacity: 1;
+            @starting-style{
+                transform: translate(-80vi, 0) scale(1);
+                opacity: 0;
+                position: fixed;
+            }
+
+        }
         & header{
             block-size: max-content;
             font-weight: 500;
@@ -338,6 +356,18 @@ main{
         border-radius: 30px;
         box-shadow: 0 -5px 0 4px var(--word-color);
         overflow: visible;
+        &[open]{ 
+            transition: transform ease-in-out 500ms,
+                        opacity ease-in-out 500ms;
+            transform: translate(0, 0vb) scale(1);
+            opacity: 1;
+            @starting-style{
+                transform: translate(0, 100vb) scale(1);
+                opacity: 0;
+                position: fixed;
+            }
+
+        }
         & header{
             padding: 0;
             margin: 0;
@@ -393,13 +423,14 @@ main{
     display: none;
 }
 
-@keyframes showCategories {
-    from{
-        transform: translate(-30vi, 0);
-        opacity: 0;
-    }
-    to{
-        transform: translatex(0vi);
-        opacity: 1;
-    }
+.animation-progress{
+    animation: restLife 500ms linear 50ms reverse;
 }
+ @keyframes restLife{
+    0%, 20%, 70%{
+      opacity: 80%;
+    }
+    50%, 100% {
+      background-color: red;
+    }
+  }

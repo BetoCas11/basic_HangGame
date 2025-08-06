@@ -1,7 +1,3 @@
-/* import { home } from "./homePage/index.js";
-import eventCategories from "./categories/index.js";
-import { GameWon } from "./endGame/index.js"; */
-
 const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 const categoriesWords = {
     'fruits': ['apple', 'banana', 'grape', 'orange', 'pear', 'strawberry', 'mango', 'pineapple', 'watermelon', 'cherry'],
@@ -38,25 +34,9 @@ const insertListCategories = (selector) => {
     <button class="select-category">${item.toUpperCase()}</button>`));
 };
 
-/* const $firstHeader = document.querySelector('body > header');
-const $mainContainer = document.querySelector('main');
-const $buttonCategories = document.querySelector('#showCategories');
-const $modalCategories = $mainContainer.querySelector('dialog');
-const $titleCategories = document.querySelector('header > nav > li > p');
-const $sectionCategories = $modalCategories.querySelector('article.categories');
-const $remainingLife  = document.querySelector("progress");
-const $guessWord = document.querySelector('.word');
-const $alphabetLetters = document.querySelector('.alphabet-letters'); */
 
 document.addEventListener('DOMContentLoaded', initGame)
 
-/* document.addEventListener('DOMContentLoaded', () => {
-    alphabet.map(letter => {
-        $alphabetLetters.insertAdjacentHTML("beforeend", /*html `<button>${letter}</button>`)
-    });
-    $titleCategories.textContent = sessionStorage.getItem('selectCategory') ?? sessionStorage.setItem('selectCategory', "Movies");
-    home($titleCategories.textContent.toLowerCase(), $buttonCategories, $modalCategories, $sectionCategories, Object.keys(categoriesWords), $titleCategories);
-});  ==> Revisar el * / del html, l´n 26 col 64*/
 
 function initGame() {
     const modalChooseCategories =  baseModal;
@@ -70,34 +50,18 @@ function initGame() {
         $modalCategories.showModal();
         
         insertListCategories('.modal > article.categories');
-        viewCategories.addEventListener('click', eventCategories);
+        viewCategories.addEventListener('click', eventCategories, {once: true});
 
-    })
+    }, {once: true})
 
-
-    /* const currentCategory = categoriesWords[sessionStorage.getItem('selectCategory').toLowerCase()];
-    const randomWord = currentCategory[Math.floor(Math.random() * currentCategory.length)].toUpperCase().split("");
-    const lastSpacedWord = randomWord.findLastIndex(index => index == " ");
-    const separationWord = randomWord.slice(0, lastSpacedWord);
-    const wordRemaing = randomWord.slice((lastSpacedWord + 1), randomWord.length);
-    const $modalHome = document.querySelector('dialog.home');
-    sessionStorage.setItem('keyword', JSON.stringify(randomWord));
-
-    $modalHome.close();
-    $firstHeader.classList.remove('hide-element');
-    [...$mainContainer.children].forEach(item => item.classList.remove('hide-element'));
-
-    wordtoInsert(randomWord, $guessWord, separationWord, wordRemaing);
-    eventCategories($buttonCategories, $modalCategories, $sectionCategories, Object.keys(categoriesWords), $titleCategories);
-    $alphabetLetters.addEventListener("click", (event) => {buttonsHandling(event, JSON.parse(sessionStorage.getItem('keyword')))}); */
 }
-
 
 
 function eventCategories(e){
 
     if (e.target.closest('button')) {
         resetMain();
+        console.log('reseteo');
         const valueText = e.target.textContent;
         previousCategory = valueText.charAt(0).toUpperCase() +  e.target.textContent.slice(1).toLowerCase();
         const $modalHome = e.target.offsetParent;
@@ -217,18 +181,22 @@ function handleLetterClick(e, currentWord){
             $currentSpan.every(itemText => itemText.textContent != "") ? setTimeout(() => { modalGameOver('You Win')},200) : null;
         } else{
             console.log("Palabra errónea");
+            $lifeGame.parentElement.classList.add('animation-progress');
             subtractLife($lifeGame, currentWord.length);
         }
     }
 }
 
 
-
 function subtractLife (life, wordLength){
     const removeLife = parseInt(100 / wordLength) + 5;
     console.log(removeLife);
-    life.setAttribute('value', (life.value - removeLife))
+    life.setAttribute('value', (life.value - removeLife));
 
+    setTimeout(() => {
+        life.parentElement.classList.remove('animation-progress');
+    }, 550);
+    
     if (life.value == 0) {
         modalGameOver('You Lose');
     }
@@ -242,7 +210,7 @@ function categoriesIntotheGame () {
      
     $modalIntoGame.addEventListener('click', (e) => {
         if(e.target.classList.contains('select-category')) eventCategories(e);
-    });
+    }, {once: true});
 }
 
 function modalGameOver(caseofGame){
@@ -261,56 +229,51 @@ function modalGameOver(caseofGame){
     </dialog>
 
     `);
-    $containerGame.querySelector('.modal-GameOver').showModal();
+    const $gameOver = $containerGame.querySelector('.modal-GameOver');
+    setTimeout(() => {
+        $gameOver.showModal();
+    }, 50);
+
+    $gameOver.addEventListener('click', optionsGameOver, {once: true});
 }
 
 function resetMain () {
     [...$mainGame.children].filter(item => item.className === 'game' ).forEach(item => item.remove())
 }
 
-/*function wordtoInsert(randomWord, guessWord, separationWord, wordRemaing){
-    $alphabetLetters.addEventListener("click", (event) => {buttonsHandling(event, JSON.parse(sessionStorage.getItem('keyword')))});
-    if (!randomWord.includes(" ")) {
-        guessWord.innerHTML = '';
-        randomWord.map(letter => {guessWord.insertAdjacentHTML('beforeend', /*html `<span><!--${letter}--></span>`)})
-        console.log(randomWord);
-    } else{
-        guessWord.innerHTML = '';
-        guessWord.insertAdjacentHTML("beforeend", `<div></div>`);
-        guessWord.insertAdjacentHTML("beforeend", `<div></div>`);
-        console.log(separationWord,wordRemaing);
-        separationWord.map(letter => {guessWord.children[0].insertAdjacentHTML('beforeend', /*html `<span><!--${letter}--></span>`)});
-        wordRemaing.map(letter => {guessWord.children[1].insertAdjacentHTML('beforeend', /*html `<span><!--${letter}--></span>`)});
-    }
-}*/
+function optionsGameOver(e){
+    const {target} = e;
+    const $headerbuttonCategories = $mainGame.querySelector('.game > header > nav > li:first-of-type > button#showCategories');
 
-/* function buttonsHandling (e, word, alphabet=$alphabetLetters) {
-    console.log(word);
-    const $currentSpan = [...document.querySelectorAll(".word span")];
-    const buttonAlhabet = e.target.textContent;
-    const fixedWord = word.filter(item => item != " ")
-    const valueIndexWord = fixedWord.map((item, index) => {
-        return {
-            "element": item,
-            "index": index
-        }
-    });
-    if (e.target.closest("button")) {
-        const matchingWord = valueIndexWord.filter(item => item.element == buttonAlhabet);
-        console.log(matchingWord, $currentSpan);
-        e.target.disabled = true;
-        e.target.style.cursor = "not-allowed";            
-        if (matchingWord.length >  0 ) {
-            matchingWord.map(item => {$currentSpan[item.index].textContent = item.element});
-        } else{
-            const valueLife = parseInt($remainingLife.getAttribute("value"));
-            valueLife != 0 ? ($remainingLife.setAttribute("value", `${valueLife - 10}`)) : console.log("Has fallado");
-            
-        }
-        
-        $currentSpan.every(itemText => itemText.textContent != "") ? setTimeout(() => { GameWon($mainContainer, $modalCategories)},200) : null;
-    }
+    $playGame.addEventListener('click', () => {
+        $sectionInit.classList.add('hide-element');
+        gameUI(previousCategory);
+    }, {once: true});
+    
 
+    switch (target.textContent) {
+        case 'Continue':
+            returnHome();
+            $playGame.click();
+            break;
+
+        case 'New Category': 
+            returnHome();
+            $playGame.click();
+            $headerbuttonCategories.click(); 
+            const $modalIntoGame = $mainGame.querySelector('.game > .modal');
+            $modalIntoGame.removeAttribute('closedby');
+            $modalIntoGame.querySelector('form').remove();
+            break;
+        case 'Quit Game':
+            returnHome();
+            break;
+        default:
+            break;
+    }
 }
- */
-/* export {initGame, wordtoInsert, categoriesWords, $guessWord, $alphabetLetters, $mainContainer, $firstHeader}; */
+
+function returnHome (){
+    resetMain();
+    $sectionInit.classList.remove('hide-element');
+};
