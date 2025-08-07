@@ -162,6 +162,7 @@ function insertWord(word){
 function handleLetterClick(e, currentWord){
     const $currentSpan = [...document.querySelectorAll(".word span")];
     const $lifeGame = $mainGame.querySelector('.game > header > nav > li:last-child > div > progress');
+    const $logoLife = $lifeGame.parentElement.nextElementSibling;
     console.log($lifeGame);
     const buttonAlhabet = e.target.textContent;
     const fixedWord = currentWord.filter(item => item != " ")
@@ -182,19 +183,21 @@ function handleLetterClick(e, currentWord){
         } else{
             console.log("Palabra errónea");
             $lifeGame.parentElement.classList.add('animation-progress');
-            subtractLife($lifeGame, currentWord.length);
+            $logoLife.classList.add('animation-progress');
+            subtractLife($lifeGame, currentWord.length, $logoLife);
         }
     }
 }
 
 
-function subtractLife (life, wordLength){
+function subtractLife (life, wordLength, logoLife){
     const removeLife = parseInt(100 / wordLength) + 5;
     console.log(removeLife);
     life.setAttribute('value', (life.value - removeLife));
 
     setTimeout(() => {
         life.parentElement.classList.remove('animation-progress');
+        logoLife.classList.remove('animation-progress');
     }, 550);
     
     if (life.value == 0) {

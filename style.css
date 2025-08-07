@@ -220,13 +220,24 @@ main{
             }
         }
     }
+    & .game{
+        container: container-game / inline-size;
+    }
     & section:not(.home){
         inline-size: 100%;
         display: flex;
         justify-content: center;
         gap: 25px;
+        container: section-game / inline-size;
         &:first-of-type{
             margin-block-end: 30px;
+            @container container-game (width <= 570px){
+                gap: 20px 10px;
+                & span{
+                    border-radius: 15px;
+
+                }
+            }
         }
     }
     & .word:has(> div){
@@ -236,6 +247,15 @@ main{
         display: inherit;
         justify-content: center;
         gap: 25px;
+        @container section-game (width <= 470px){
+            gap: 10px;
+            & span{
+                inline-size: 60px;
+                block-size: 70px;
+                border-radius: 12px;
+
+            }
+        }
     }
     & .word span{
         color: white;
@@ -248,10 +268,14 @@ main{
         font-weight: 900;
         font-size: xx-large;
         box-shadow: 0 -10px #4970eb;
+        @container container-game (width <= 570px){
+            inline-size: 60px;
+            block-size: 70px;
+        }
+
     }
     & .alphabet-letters {
         flex-wrap: wrap;
-        container: container-button / inline-size;
           &  button{
             font-family: "Poppins", sans-serif;
             inline-size: 105px;
@@ -261,7 +285,7 @@ main{
             font-size: x-large;
             color: var(--text-color);
             cursor: pointer;
-            @container container-button (width <= 470px){
+            @container section-game (width <= 570px){
                 inline-size: 70px;
                 block-size: 50px;
             }
@@ -424,7 +448,8 @@ main{
 }
 
 .animation-progress{
-    animation: restLife 500ms linear 50ms reverse;
+    animation: restLife 500ms linear 50ms reverse,
+               throbLogo 500ms linear 50ms;
 }
  @keyframes restLife{
     0%, 20%, 70%{
@@ -433,4 +458,12 @@ main{
     50%, 100% {
       background-color: red;
     }
+  }
+
+  @keyframes throbLogo {
+    0% { transform: translate(0); }
+    25% { transform: translate(-2px, 2px); }
+    50% { transform: translate(2px, -2px); }
+    75% { transform: translate(-2px, -2px); }
+    100% { transform: translate(2px, 2px); }
   }
