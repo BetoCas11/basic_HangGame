@@ -35,7 +35,7 @@ const insertListCategories = (selector) => {
 };
 
 
-document.addEventListener('DOMContentLoaded', initGame)
+document.addEventListener('DOMContentLoaded', initGame);
 
 
 function initGame() {
@@ -54,21 +54,18 @@ function initGame() {
 
     }, {once: true})
 
-}
+};
 
 
 function eventCategories(e){
 
     if (e.target.closest('button')) {
         resetMain();
-        console.log('reseteo');
         const valueText = e.target.textContent;
         previousCategory = valueText.charAt(0).toUpperCase() +  e.target.textContent.slice(1).toLowerCase();
         const $modalHome = e.target.offsetParent;
-        console.log($modalHome);
         $modalHome ? $modalHome.remove() : null;
 
-       /*  !isFirstGame ? $containerGame.remove() : console.info('Primer juego', $containerGame); */
 
         gameUI(previousCategory);
     };
@@ -77,7 +74,6 @@ function eventCategories(e){
 function gameUI(currentWord){
    buttonVisibility();
    const resultingtWord = randomWord();
-   console.log(resultingtWord);
 
    $mainGame.insertAdjacentHTML('beforeend', /*html*/ `
     <div class="game">
@@ -163,7 +159,6 @@ function handleLetterClick(e, currentWord){
     const $currentSpan = [...document.querySelectorAll(".word span")];
     const $lifeGame = $mainGame.querySelector('.game > header > nav > li:last-child > div > progress');
     const $logoLife = $lifeGame.parentElement.nextElementSibling;
-    console.log($lifeGame);
     const buttonAlhabet = e.target.textContent;
     const fixedWord = currentWord.filter(item => item != " ")
     const valueIndexWord = fixedWord.map((item, index) => {
@@ -174,25 +169,22 @@ function handleLetterClick(e, currentWord){
     });
     if (e.target.closest("button")) {
         const matchingWord = valueIndexWord.filter(item => item.element == buttonAlhabet);
-        console.log(matchingWord, $currentSpan);
         e.target.disabled = true;
         e.target.style.cursor = "not-allowed";            
         if (matchingWord.length >  0 ) {
             matchingWord.map(item => {$currentSpan[item.index].textContent = item.element});
             $currentSpan.every(itemText => itemText.textContent != "") ? setTimeout(() => { modalGameOver('You Win')},200) : null;
         } else{
-            console.log("Palabra errónea");
             $lifeGame.parentElement.classList.add('animation-progress');
             $logoLife.classList.add('animation-progress');
             subtractLife($lifeGame, currentWord.length, $logoLife);
         }
     }
-}
+};
 
 
 function subtractLife (life, wordLength, logoLife){
     const removeLife = parseInt(100 / wordLength) + 5;
-    console.log(removeLife);
     life.setAttribute('value', (life.value - removeLife));
 
     setTimeout(() => {
@@ -203,7 +195,7 @@ function subtractLife (life, wordLength, logoLife){
     if (life.value == 0) {
         modalGameOver('You Lose');
     }
-}
+};
 
 function categoriesIntotheGame () {
     const $containerGame = $mainGame.querySelector('.game');
@@ -214,7 +206,7 @@ function categoriesIntotheGame () {
     $modalIntoGame.addEventListener('click', (e) => {
         if(e.target.classList.contains('select-category')) eventCategories(e);
     }, {once: true});
-}
+};
 
 function modalGameOver(caseofGame){
     const $containerGame = $mainGame.querySelector('.game');
@@ -238,11 +230,11 @@ function modalGameOver(caseofGame){
     }, 50);
 
     $gameOver.addEventListener('click', optionsGameOver, {once: true});
-}
+};
 
 function resetMain () {
     [...$mainGame.children].filter(item => item.className === 'game' ).forEach(item => item.remove())
-}
+};
 
 function optionsGameOver(e){
     const {target} = e;
@@ -274,7 +266,7 @@ function optionsGameOver(e){
         default:
             break;
     }
-}
+};
 
 function returnHome (){
     resetMain();
